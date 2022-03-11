@@ -7,6 +7,7 @@ dotenv.config()
 
 
 const privateKey = process.env.PRIVATE_KEY
+const publicKey = process.env.PUBLIC_KEY
 
 
 
@@ -44,5 +45,25 @@ export const login = async (req, res) => {
 
     } catch (error) {
 
+    }
+}
+
+export const validate = async (req, res) => {
+
+
+    let { token, email } = req.body;
+    console.log(token, email)
+    if (!token || !email) {
+        return res.send({ counterfeit: true })
+    }
+    try {
+        let user = jwt.verify(token, publicKey);
+        console.log(user)
+        if (user.email !== email) {
+            return res.send({ counterfeit: true })
+        }
+        res.status(200).send({ counterfeit: false });
+    } catch (error) {
+        res.send({ counterfeit: true })
     }
 }

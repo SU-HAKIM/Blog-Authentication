@@ -66,7 +66,6 @@ const App = () => {
     e.preventDefault();
     try {
       let loginUser = await axios.post('/auth/login', userLogin);
-      console.log(loginUser.data)
       if (loginUser.data.loggedIn) {
         setLoginError({
           email: '',
@@ -76,6 +75,8 @@ const App = () => {
           email: '',
           password: ''
         })
+        localStorage.setItem("user", JSON.stringify(loginUser.data));
+        navigate("/protected");
       } else {
         setLoginError(loginUser.data)
       }
@@ -110,7 +111,6 @@ const App = () => {
         />
         <Route path="/protected" element={<Protected />} />
         <Route element={<NotFound />} />
-
       </Routes>
     </>
   )
