@@ -1,8 +1,13 @@
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
-
+import dotenv from "dotenv";
 import { formatter } from "../utils/formatter.js";
+dotenv.config()
+
+
+const privateKey = process.env.PRIVATE_KEY
+
 
 
 export const register = async (req, res) => {
@@ -27,9 +32,11 @@ export const login = async (req, res) => {
         return res.status(400).json(error.mapped())
     }
     try {
-        console.log("login successfully")
-        res.status(200).json({ loggedIn: true })
+        let { email } = req.body;
+        let user = await User.findOne({ email })
 
+        let token = jwt.sign({ _id: user._id, email: user.email }, privateKey, { algorithm: "RS256" })
+        res.status(200).send({ loggedIn: true, token, _id: user._id, email: user.email })
 
     } catch (error) {
 
