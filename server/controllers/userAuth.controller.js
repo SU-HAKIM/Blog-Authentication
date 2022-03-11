@@ -13,7 +13,9 @@ const privateKey = process.env.PRIVATE_KEY
 export const register = async (req, res) => {
     const error = validationResult(req).formatWith(formatter);
     if (!error.isEmpty()) {
-        return res.status(400).json(error.mapped())
+        return res.json({
+            registered: false, ...error.mapped()
+        })
     }
     try {
         let { name, email, password } = req.body;
@@ -29,7 +31,9 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     const error = validationResult(req).formatWith(formatter);
     if (!error.isEmpty()) {
-        return res.status(400).json(error.mapped())
+        return res.json({
+            loggedIn: false, ...error.mapped()
+        })
     }
     try {
         let { email } = req.body;
