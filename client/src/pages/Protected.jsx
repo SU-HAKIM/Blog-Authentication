@@ -1,23 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Content } from "../App";
 
 const Protected = () => {
   const navigate = useNavigate();
+  const context = useContext(Content);
   useEffect(() => {
-    let user = JSON.parse(localStorage.getItem("user"));
-    async function validateUser() {
-      let counterfeit = await axios.post("/auth/validate", {
-        token: user.token,
-        email: user.email,
-      });
-      if (counterfeit.data.counterfeit) {
-        navigate("/login");
-      }
+    if (context.counterfeit) {
+      navigate("/login");
     }
-    validateUser();
-  }, [navigate]);
-
+  }, [context, navigate]);
   return <div className="container center">Protected</div>;
 };
 

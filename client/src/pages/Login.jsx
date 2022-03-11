@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({ login, loginHandleChange, loginError, userLogin }) => {
+const Login = ({
+  login,
+  loginHandleChange,
+  loginError,
+  userLogin,
+  loggedIn,
+  counterfeit,
+}) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (loggedIn && !counterfeit) {
+      navigate("/protected");
+    }
+  }, [loggedIn, counterfeit, navigate]);
   return (
     <div className="container">
       <form className="card w-50 mx-auto mt-5" onSubmit={login}>
