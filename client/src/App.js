@@ -118,7 +118,6 @@ const App = () => {
     }
   }
   //functions ends
-  console.log(user);
   return (
     <Content.Provider value={{ counterfeit }}>
       <Navbar loggedIn={user && user.loggedIn} counterfeit={counterfeit} setCounterfeit={setCounterfeit} />
